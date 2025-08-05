@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('_head.ejs'); %>
+<!---------------------------------------------------------------------------------------------------------------->
+<div class="hero bg-base-300 rounded-box  w-full">
+    <div class="hero-content text-center">
+        <div>
+            <h1 class="text-lg font-bold">koling.fun</h1>
+            <p class="py-3 text-xs">
+                AI图文内容助手, 秒生成图文内容, 秒发音、小红书、微信、微博、twitter ,轻松做KOL吸粉拿流量。
+            </p>
+        </div>
+    </div>
+</div>
+<span class="label text-xs whitespace-normal m-2">
+        ${tip}
+</span>
+<!---------------------------------------------------------------------------------------------------------------->
+
+<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border px-4 pb-2 w-full shadow-sm">
+    <div class="font-bold my-2">使用方法</div>
+    <div class="flex flex-col gap-2">
+        <a>1. 找个想法或话题。（AI可以帮你生成吸引人的选题）</a>
+        <a>2. AI帮你完善这个话题，生成一篇文章。</a>
+        <a>3. 本工具帮你把文章转化成图文。</a>
+        <a>4. 发到抖音、快手、小红书、微博、Twitter、Instagram 。</a>
+    </div>
+</fieldset>
+
+
+<!---------------------------------------------------------------------------------------------------------------->
+<fieldset class="fieldset bg-base-300 rounded-box  w-full ">
+    <div class="font-bold m-2">分类模板</div>
+    <span class="label whitespace-normal m-2">
+        最方便, 针对不同场景、人群、行业提供现成的内容模板, 最便捷的生成方式。
+    </span>
+    <a class="btn rounded-t-none  btn-neutral" href="/categories">
+        使用模板
+    </a>
+</fieldset>
+
+<!---------------------------------------------------------------------------------------------------------------->
+<fieldset class="fieldset bg-base-300 rounded-box  w-full ">
+    <div class="font-bold m-2">自定义生成</div>
+    <span class="label whitespace-normal m-2">
+        最灵活, 大模型为你生成话题和内容，在AI生成的文章符合需求后，工具将帮助你生成图文。
+    </span>
+    <button class="btn rounded-t-none  btn-neutral" @click="createTopic">
+        开始
+    </button>
+</fieldset>
+<!---------------------------------------------------------------------------------------------------------------->
+<fieldset class="fieldset bg-base-300 rounded-box w-full ">
+    <div class="font-bold m-2">导入对话</div>
+    <span class="label whitespace-normal m-2">
+        最便宜, 将在其他AI大模型（豆包、千问、Grok、Deepseek等）的对话内容生成为图文内容。点击【导入对话】。
+    </span>
+    <a class="btn rounded-t-none  btn-neutral" href="/paste">
+        导入对话
+    </a>
+</fieldset>
+<!---------------------------------------------------------------------------------------------------------------->
+<fieldset class="fieldset bg-base-300 rounded-box w-full ">
+    <div class="font-bold m-2">历史记录</div>
+    <span class="label whitespace-normal m-2">
+        点击【历史记录】回顾历史文章, 可重复使用或对历史文章进行修改再利用。
+    </span>
+    <a class="btn rounded-t-none  btn-neutral" href="/topics">
+        历史记录
+    </a>
+</fieldset>
+<!---------------------------------------------------------------------------------------------------------------->
+
+<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border px-4 pb-2 w-full shadow-sm">
+    <div class="font-bold my-2">更多</div>
+    <div class="flex flex-col gap-2">
+        <a>通过模板市场选择个性化的图文背景、文字式样制作个性化的内容。</a>
+        <a>通过水印市场选择个性化的水印风格。</a>
+    </div>
+</fieldset>
+<!---------------------------------------------------------------------------------------------------------------->
+
+
+<%- include('_bottom.ejs'); %>
+<script type="text/javascript">
+    //
+    createApp({
+        data: {
+            tips: [
+                "做内容需要坚持,粉不是一天来的.",
+                "选好受众,选好领域,低成本持续发才是王道.",
+                "图文类内容更易吸引高端粉,粉慢但质量高.",
+                "以周或者两周为单位来看流量.",
+                "记住转化才是根本,转化不了的粉无用.",
+            ],
+            tip: '',
+        },
+
+        methods: {
+            init: async function () {
+                let self = this;
+                self.initListeners();
+                EventOp.pub(CommonEventsDef.page_ready);
+
+            }
+            ,
+            initListeners: function () {
+                let self = this;
+                // --------------------------------------------------------------------
+                // 启动同步信号
+                EventOp.sub(CommonEventsDef.page_ready, [
+                    self.changeTip
+                ]);
+            }
+            ,
+            // --------------------------------------------------------------------
+            createTopic: async function () {
+                let self = this;
+                const res = await editorService.createTopic({});
+                errMsgIf(res);
+                window.location.href = `/edit?topicId=${res.data}`;
+            }
+            ,
+            changeTip: function (tip) {
+                let self = this;
+                const tips = self.tips;
+                // 随机从 tips 里面选一个
+                self.tip = tips[Math.floor(Math.random() * tips.length)];
+                setTimeout(function () {
+                    self.changeTip(tip);
+                }, 5000);
+            }
+
+        }
+    })
+    ;
+</script>
+</html>

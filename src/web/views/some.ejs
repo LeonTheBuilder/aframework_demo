@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('_head.ejs'); %>
+<!----------------------------------------------------------------------->
+
+<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4 w-full">
+    <legend class="fieldset-legend">用户级别</legend>
+    <p class="text-lg">免费用户</p>
+    <label class="label">有限次分析及推送,受限制的使用服务</label>
+</fieldset>
+
+
+<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4 w-full">
+    <legend class="fieldset-legend">修改密码</legend>
+    <label class="label">密码</label>
+    <input type="text" class="input w-full" placeholder="" v-model="password"/>
+    <label class="label">重复密码</label>
+    <input type="text" class="input w-full" placeholder="" v-model="passwordRepeat"/>
+    <label class="label">密码提示</label>
+    <input type="text" class="input w-full" placeholder="" v-model="passwordHint"/>
+    <button class="btn btn-sm btn-neutral mt-4" @click="modifyPassword">修改密码</button>
+</fieldset>
+
+<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4 w-full">
+    <legend class="fieldset-legend">退出登录</legend>
+    <button class="btn btn-sm btn-neutral mt-4" @click="logout">退出登录</button>
+</fieldset>
+
+
+<!----------------------------------------------------------------------->
+<%- include('_bottom.ejs'); %>
+<script type="text/javascript">
+    createApp({
+        data: {
+            user: {},
+            password: null,
+            passwordRepeat: null,
+            passwordHint: null,
+        },
+        methods: {
+            init: async function () {
+                let self = this;
+                self.initListeners();
+                EventOp.pub(CommonEventsDef.page_ready);
+            },
+            initListeners: function () {
+                let self = this;
+            },
+            modifyPassword: async function () {
+
+            },
+
+            logout: async function () {
+                let self = this;
+                const res = await userService.logout({});
+                errMsgIf(res);
+                window.location.href = '/';
+            },
+        },
+    });
+</script>
+</html>

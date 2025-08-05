@@ -1,0 +1,16 @@
+{
+  "name": "newcrew",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "nodemon src/main.js",
+    "prod": "nodemon src/main.js"
+  },
+  "devDependencies": {
+    "mocha": "^11.1.0",
+    "nodemon": "^3.1.7",
+    "sequelize": "^6.37.3"
+  },
+  "dependencies": {
+    "aframework": "git+https://gitee.com/leonononon/aframework.git"
+  }
+}
